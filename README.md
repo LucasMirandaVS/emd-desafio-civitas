@@ -4,7 +4,7 @@ Esta documentação destina-se a detalhar o passo a passo da resolução do desa
 
 ## 1. Análise Exploratória de Dados
 
-Como primeiro passo, realizei uma análise exploratória para entender o tamanho da tabela e os tipos de dados registrados e algumas estatísticas descritivas. 
+Como primeiro passo, realizei uma análise exploratória para entender o tamanho da tabela, os tipos de dados registrados e algumas estatísticas descritivas. 
 
 ### Descrição da Tabela
 
@@ -27,34 +27,30 @@ Dentre as informações observadas, destacam-se:
 * Duplicidade de placas: Observados 140.112 casos em que a mesma placa foi detectada no mesmo momento, indicando possíveis problemas de duplicação de dados.
 
 ### 1.1 Inconsistências Detectadas
-Durante a análise, foram identificadas algumas inconsistências significativas nos dados. Investigando a distribuição geográfica das detecções por radar, foi possível observar um número elevado de registros com coordenadas de latitude e longitude iguais a zero, indicando possíveis falhas nas câmeras de monitoramento.
+Durante a análise foram identificadas algumas inconsistências significativas nos dados. Investigando a distribuição geográfica das detecções por radar, foi possível observar um número elevado de registros com coordenadas de latitude e longitude iguais a zero, indicando possíveis falhas nas câmeras de monitoramento.
 
-Consultando a distribuição geográfica das observações:
+Contando o número de observações com latitude e longitude zeradas por câmera:
 
-![e7e317dc-f419-4778-92dd-e37028f645af](https://github.com/LucasMirandaVS/emd-desafio-civitas/assets/77032413/04e66f9a-eac0-4317-8bd7-3d5eaf3ac674)
+![e7e317dc-f419-4778-92dd-e37028f645af](https://github.com/LucasMirandaVS/emd-desafio-civitas/assets/77032413/322c1d26-f5b2-4bde-8d47-dc326b921563)
 
-Além disso,  ao analisar algumas das coordenadas registradas também pude observar que algumas delas estavam fora do esperado para o território do município do Rio de Janeiro, incluindo até registros no meio do mar. Isso sugere que algumas câmeras podem estar com problemas na geolocalização.
+Além disso,  ao analisar algumas das coordenadas registradas também pude observar que algumas destas estavam fora do esperado para o território do município do Rio de Janeiro, incluindo até registros no meio do mar. Isso sugere que algumas das câmeras podem estar com problemas na geolocalização.
 
 ### 1.2  Analisando as Câmeras de Radar
-Ao explorar detalhadamente as câmeras de radar, observa-se que uma delas capturou um número substancialmente maior de veículos em comparação com todas as outras no conjunto de dados. Esta câmera também é a que mais apresentou  coordenadas de latitude e longitude zeradas, o que pode afetar a precisão geográfica dos registros.
+Ao explorar detalhadamente as câmeras de radar, observou-se que uma delas capturou um número substancialmente maior de veículos em comparação com todas as outras no conjunto de dados. Esta câmera também é uma das que mais apresentou coordenadas de latitude e longitude zeradas, o que pode afetar a precisão geográfica dos registros.
 
-A query utilizada para identificar os registros zerados por camera foi:
+Por fim, vale destacar que os registros com latitude e longitude zerados são provenientes das câmeras da mesma empresa, aqui identificada como "HiVFr51Ixg==".
+
+A query utilizada para identificar os registros zerados por empresa:
 ```
-SELECT 
-    camera_numero,
-    COUNT(*) AS quantidade_registros_zerados
-FROM 
-    rj-cetrio.desafio.readings_2024_06
-WHERE  camera_latitude = 0 AND camera_longitude = 0
-GROUP BY   camera_numero
-ORDER BY  quantidade_registros_zerados DESC;
+SELECT empresa,
+ COUNT(*) AS contagem
+FROM rj-cetrio.desafio.readings_2024_06
+WHERE camera_latitude = 0 AND camera_longitude = 0
+GROUP BY empresa
+ORDER BY contagem DESC;
 ```
-Seu resultado:
 
-![4cc298c2-93ac-4987-8368-ac960036dd86](https://github.com/LucasMirandaVS/emd-desafio-civitas/assets/77032413/dbe1b9ff-f82f-42ef-8da4-6be62ddc544b)
-
-
-## 2. Identificando as placas Clonadas
+## 2. Identificando as Placas Clonadas
 
 Para construir a query, foram adotadas as seguintes premissas fundamentais:
 
@@ -113,5 +109,22 @@ Para identificar potenciais placas clonadas, a query construída realiza o segui
 3. Filtra os resultados para exibir apenas as detecções que ocorreram em menos de 1 minuto e onde a distância entre elas é superior a 1000 metros.
 4. Ordena os resultados por placa e datahora para facilitar a análise temporal e espacial das detecções.
    
-Essa abordagem possibilita identificar padrões que sugerem potenciais casos de clonagem de placas, utilizando como base as premissas definidas: Proximidade temporal e geográfica das detecções registradas pelas câmeras.
+Essa abordagem possibilita identificar padrões que sugerem potenciais casos de clonagem de placas, utilizando como base as premissas definidas: Proximidade temporal e geográfica das detecções registradas pelas câmeras. O resultado finaç da query nos dá as seguintes informações finais:
+* placa: A placa do veículo detectado.
+
+* datahora_a: A data e hora da primeira detecção
+
+* latitude_a: A latitude da câmera na primeira detecção
+
+* longitude_a: A longitude da câmera na primeira detecção.
+
+* datahora_b: A data e hora da segunda detecção.
+
+* latitude_b: A latitude da câmera na segunda detecção.
+
+* longitude_b: A longitude da câmera na segunda detecção.
+
+* tempo_entre_deteccoes: O tempo entre as duas detecções, medido em segundos.
+
+* distancia_m: A distância geográfica entre os dois pontos de detecção, medida em metros.
 
