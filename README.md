@@ -109,7 +109,7 @@ Para identificar potenciais placas clonadas, a query construída realiza o segui
 3. Filtra os resultados para exibir apenas as detecções que ocorreram em menos de 1 minuto e onde a distância entre elas é superior a 1000 metros.
 4. Ordena os resultados por placa e datahora para facilitar a análise temporal e espacial das detecções.
    
-Essa abordagem possibilita identificar padrões que sugerem potenciais casos de clonagem de placas, utilizando como base as premissas definidas: Proximidade temporal e geográfica das detecções registradas pelas câmeras. O resultado finaç da query nos dá as seguintes informações finais:
+Essa abordagem possibilita identificar padrões que sugerem potenciais casos de clonagem de placas, utilizando como base as premissas definidas: Proximidade temporal e geográfica das detecções registradas pelas câmeras. O resultado final da query construida nos dá as seguintes informações finais:
 * placa: A placa do veículo detectado.
 
 * datahora_a: A data e hora da primeira detecção
