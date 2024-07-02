@@ -1,6 +1,6 @@
 # Desafio CIVITAS - EMD
 
-Esta documentação destina-se a detalhar o passo a passo da resolução do desafio CIVITAS.
+Esta documentação destina-se a detalhar o passo a passo da resolução do desafio CIVITAS. O arquivo .sql com todas as queries utilizadas também encontra-se neste repositório.
 
 ## 1. Análise Exploratória de Dados
 
