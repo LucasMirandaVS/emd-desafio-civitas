@@ -4,7 +4,7 @@ Esta documentação destina-se a detalhar o passo a passo da resolução do desa
 
 ## 1. Análise Exploratória de Dados
 
-Como primeiro passo, realizei uma análise exploratória para entender o tamanho da tabela, os tipos de dados registrados e algumas estatísticas descritivas. 
+Como primeiro passo, realizei uma análise exploratória para entender o tamanho da tabela e os tipos de dados registrados e algumas estatísticas descritivas. 
 
 ### Descrição da Tabela
 
